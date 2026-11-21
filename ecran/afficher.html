@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RCM - Écran clubhouse</title>
+<style>
+  /* Cache le curseur de la souris partout sur la page */
+  html, body, * { cursor: none !important; }
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+  img { display: block; width: 100%; height: 100%; object-fit: contain; }
+</style>
+</head>
+<body>
+<img id="slide" alt="">
+<script>
+  // Usage : afficher.html?s=<nom-du-fichier-sans-.jpg>
+  // Exemple : afficher.html?s=weekend-resultats
+  var BASE = 'https://raw.githubusercontent.com/infrarugbymons/rcm-visuels-publics/main/ecran/';
+  var nom = new URLSearchParams(location.search).get('s') || '';
+  var img = document.getElementById('slide');
+  function charger() {
+    if (!nom) return;
+    // Paramètre anti-cache pour toujours afficher la dernière version
+    var url = BASE + encodeURIComponent(nom) + '.jpg?t=' + Date.now();
+    var pre = new Image();
+    pre.onload = function () { img.src = url; };
+    pre.src = url;
+  }
+  charger();
+  // Rechargement toutes les 10 minutes, sans écran noir entre deux versions
+  setInterval(charger, 10 * 60 * 1000);
+</script>
+</body>
+</html>
